@@ -244,7 +244,7 @@ function Notifications() {
       return total + (item.intensity * item.demand);
     }, 0);
     setPreviousUserDemand(parseInt(sumD));
-    const userInput = parseInt(event.target.value);
+    const userInput =event.target.value ? parseInt(event.target.value) : 0;
     const sum = chartData.reduce((total, item) => total + item.demand, 0);
     const increaseMultiplier = sum !== 0 ? (sum + (userInput * 3)) / sum : 0;
 
@@ -265,7 +265,7 @@ function Notifications() {
   
   const handleDecreaseDemandChange = (event) => {
     
-    const userInput = parseInt(event.target.value);
+    const userInput =event.target.value ? parseInt(event.target.value) : 0;
     const sum = chartData.reduce((total, item) => total + item.demand, 0);
     const sumD = chartData.reduce((total, item) => {
       return total + (item.intensity * item.demand);
