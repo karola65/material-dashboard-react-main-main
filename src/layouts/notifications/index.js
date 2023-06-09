@@ -407,30 +407,32 @@ function Notifications() {
               </form>
 
 
-              {isFormFilled() && (
+              
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <MDBox p={2} textAlign="center">
                     <MDTypography variant="h5">Total Hourly Carbon</MDTypography>
-                    <MDTypography variant="h3">{previousUserDemand}</MDTypography>
-                
+                    {isFormFilled() && (
+                    <MDTypography variant="h3">{previousUserDemand}</MDTypography>)}
                   </MDBox>
                 </Grid>
                 <Grid item xs={4}>
                   <MDBox p={2} textAlign="center">
                     <MDTypography variant="h5">Adjusted Hourly Carbon</MDTypography>
-                    <MDTypography variant="h3">{carbonIntensitySum}</MDTypography>
+                    {isFormFilled() && (
+                    <MDTypography variant="h3">{carbonIntensitySum}</MDTypography>)}
                   
                   </MDBox>
                 </Grid>
                 <Grid item xs={4}>
                   <MDBox p={2} textAlign="center">
                     <MDTypography variant="h5" style={{ color: 'green' }}>Avoided Hourly Carbon</MDTypography>
-                    <MDTypography variant="h3" style={{ color: 'green' }}>{previousUserDemand - carbonIntensitySum }</MDTypography>
+                    {isFormFilled() && (
+                    <MDTypography variant="h3" style={{ color: 'green' }}>{previousUserDemand - carbonIntensitySum }</MDTypography>)}
                  
                   </MDBox>
                 </Grid>
-              </Grid>)}
+              </Grid>
 
               <br/>
               <br/>
