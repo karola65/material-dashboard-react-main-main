@@ -140,9 +140,7 @@ export default function App() {
       sx={{ cursor: "pointer" }}
       onClick={handleConfiguratorOpen}
     >
-      <Icon fontSize="small" color="inherit">
-        settings
-      </Icon>
+    
     </MDBox>
   );
 
@@ -178,8 +176,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Carbon protocol"
+             brandName="PEER CARBON PROTOCOL"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -193,6 +190,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/notifications" />} />
       </Routes>
+      
     </ThemeProvider>
   );
 }
