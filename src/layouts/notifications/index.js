@@ -213,6 +213,8 @@ function Notifications() {
   const [increaseDemand, setIncreaseDemand] = useState('');
   const [decreaseDemand, setDecreaseDemand] = useState('');
   const [carbonIntensitySum, setCarbonIntensitySum] = useState(0);
+  const [carbonIntensitySum2, setCarbonIntensitySum2] = useState(0);
+  const [a, setA] = useState(0);
   const [adjustedChartData, setAdjustedChartData] = useState([]);
   const [previousUserDemand, setPreviousUserDemand] = useState('');
   const [demandChange, setDemandChange] = useState('');
@@ -220,14 +222,29 @@ function Notifications() {
   
   useEffect(() => {
     fetchChartData();
-    calculateCarbonIntensitySum();
+
+    setCarbonIntensitySum(0);
+    
+    
   }, []);
 
+  useEffect(() => {
+  calculateCarbonIntensitySum();
+  calculateCarbonIntensitySum2();
+  
+
+ 
+}, [chartData]);
 
 
   const handleIncreaseDemandChange = (event) => {
+    setPreviousUserDemand(0);
     setPreviousUserDemand(calculateCarbonIntensitySum());
-    const userInput = parseFloat(event.target.value);
+    const sumD = chartData.reduce((total, item) => {
+      return total + (item.intensity * item.demand);
+    }, 0);
+    setPreviousUserDemand(parseInt(sumD));
+    const userInput = parseInt(event.target.value);
     const sum = chartData.reduce((total, item) => total + item.demand, 0);
     const increaseMultiplier = sum !== 0 ? (sum + (userInput * 3)) / sum : 0;
 
@@ -247,9 +264,13 @@ function Notifications() {
 
   
   const handleDecreaseDemandChange = (event) => {
-    setPreviousUserDemand(calculateCarbonIntensitySum);
-    const userInput = parseFloat(event.target.value);
+    
+    const userInput = parseInt(event.target.value);
     const sum = chartData.reduce((total, item) => total + item.demand, 0);
+    const sumD = chartData.reduce((total, item) => {
+      return total + (item.intensity * item.demand);
+    }, 0);
+    setPreviousUserDemand(parseInt(sumD));
     const decreaseMultiplier = sum !== 0 ? (sum - (userInput * 3)) / sum : 0;
     const solarGenerationData = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.122, 0.431, 1.247, 2.156, 3.038, 3.993, 4.885, 5.409, 5.71, 5.391, 4.827, 4.275, 3.366, 2.428, 1.425, 0.459, 0.131, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.0, 0.0, 0.0, 0.132, 0.402, 1.088, 1.688, 2.615, 3.705, 4.958, 5.521, 5.879, 5.615, 4.913, 4.435, 3.496, 2.569, 1.519, 0.524, 0.104, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.009, 0.131, 0.451, 1.171, 2.129, 3.562, 2.971, 3.104, 3.496, 4.651, 4.537, 3.572, 3.028, 2.793, 1.82, 1.218, 0.657, 0.122, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.0, 0.0, 0.009, 0.0];
     const sumSolar = solarGenerationData.reduce((partialSum, a) => partialSum + a, 0);
@@ -259,11 +280,12 @@ function Notifications() {
       return { ...item, demand: Math.max(updatedDemand, 0) };
     });
   
-    calculateCarbonIntensitySum();
+    
     setChartData(updatedChartData);
     //setIncreaseDemand('');
     setDecreaseDemand(userInput.toString());
-  
+   
+    setA(parseInt(carbonIntensitySum));
    
   };
   
@@ -274,7 +296,8 @@ function Notifications() {
       const carbonIntensityData = await fetchCarbonIntensityData();
       const demandData = [9.787, 9.337, 9.601, 9.674, 9.488, 9.187, 9.309, 8.925, 8.897, 9.3, 9.975, 9.262, 8.7, 9.263, 9.675, 10.95, 11.165, 11.672, 10.669, 9.946, 10.369, 10.126, 9.617, 8.261, 8.108, 8.373, 8.091, 9.064, 9.899, 9.667, 8.578, 9.337, 11.184, 13.819, 13.087, 13.922, 14.1, 14.512, 12.938, 13.125, 14.25, 13.799, 14.175, 12.413, 11.963, 11.887, 11.738, 10.913, 10.836, 10.425, 9.836, 10.875, 10.725, 10.874, 10.238, 10.65, 10.35, 10.912, 11.776, 10.688, 10.283, 10.088, 10.462, 10.575, 10.491, 12.095, 11.389, 13.351, 13.8, 14.278, 13.343, 12.233, 12.083, 10.867, 10.864, 10.727, 10.585, 10.095, 10.707, 9.206, 9.712, 11.345, 11.427, 11.963, 13.2, 12.788, 11.962, 12.685, 13.05, 12.3, 12.188, 12.824, 13.013, 11.55, 11.55, 10.838, 10.125, 9.825, 9.225, 8.775, 9.0, 8.924, 9.038, 8.963, 9.037, 9.563, 10.125, 9.6, 8.962, 8.963, 9.375, 9.422, 10.208, 10.819, 9.563, 9.759, 9.217, 9.862, 10.657, 9.292, 9.758, 9.114, 9.711, 10.172, 11.241, 11.043, 10.557, 12.356, 11.944, 12.872, 14.429, 14.746, 13.313, 13.612, 13.575, 13.688, 13.088, 13.312, 12.983, 11.363, 11.887, 10.389, 10.396, 10.087]
       const solarGenerationData = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.122, 0.431, 1.247, 2.156, 3.038, 3.993, 4.885, 5.409, 5.71, 5.391, 4.827, 4.275, 3.366, 2.428, 1.425, 0.459, 0.131, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.0, 0.0, 0.0, 0.132, 0.402, 1.088, 1.688, 2.615, 3.705, 4.958, 5.521, 5.879, 5.615, 4.913, 4.435, 3.496, 2.569, 1.519, 0.524, 0.104, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.009, 0.131, 0.451, 1.171, 2.129, 3.562, 2.971, 3.104, 3.496, 4.651, 4.537, 3.572, 3.028, 2.793, 1.82, 1.218, 0.657, 0.122, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009, 0.0, 0.0, 0.0, 0.009, 0.0];
-      
+      setPreviousUserDemand(parseInt(0));
+      setCarbonIntensitySum(0);
 
 
       const chartData = carbonIntensityData.map((item, index) => ({
@@ -295,8 +318,19 @@ function Notifications() {
       return total + (item.intensity * item.demand);
     }, 0);
     setCarbonIntensitySum(parseInt(sum));
+    
   };
   
+  const calculateCarbonIntensitySum2 = () => {
+    const sum = chartData.reduce((total, item) => {
+      return total + (item.intensity * item.demand);
+    }, 0);
+    setCarbonIntensitySum2(parseInt(sum));
+  };
+
+  const isFormFilled = () => {
+    return increaseDemand !== '' && decreaseDemand !== '';
+  };
 
   const fetchCarbonIntensityData = async () => {
     try {
@@ -323,6 +357,7 @@ function Notifications() {
     }
   };
 
+
  
  
   return (
@@ -331,8 +366,8 @@ function Notifications() {
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} lg={10}>
             <MDBox p={2} lineHeight={0}>
-            <MDBox p={2} textAlign="center">
-              <MDTypography variant="h5">Check how much you can save</MDTypography>
+            <MDBox p={2} textAlign="left">
+              <MDTypography variant="h3">Your hourly carbon</MDTypography>
             </MDBox>
             </MDBox>
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
@@ -349,37 +384,71 @@ function Notifications() {
                 </LineChart>
               </ResponsiveContainer>
             </Box>
-            <MDBox p={2} textAlign="center">
-              <MDTypography variant="h5">Total Carbon Intensity (grams) </MDTypography>
-              <MDTypography variant="h3">{carbonIntensitySum}</MDTypography>
-              <MDTypography variant="h3">{previousUserDemand}</MDTypography>
-      
-            </MDBox>
-            <MDBox p={2} textAlign="center">
-              <MDTypography variant="h5">Adjust your parameters</MDTypography>
-              <form >
+            
+            <MDBox p={2} textAlign="left">
+              <MDTypography variant="h3">Personalise</MDTypography>
+              <form  onSubmit={handleIncreaseDemandChange}>
                 <MDBox mt={2} mb={1}>
                   <label>
                    Your daily demand:
-                    <input type="number" value={increaseDemand} onChange={handleIncreaseDemandChange} />
+                    <input type="number" value={increaseDemand} onChange={handleIncreaseDemandChange} /> kWh
                   </label>
+                 
                 </MDBox>
+               
                 <MDBox mt={1} mb={2}>
                   <label>
                     Your daily solar generation:
-                    <input type="number" value={decreaseDemand} onChange={handleDecreaseDemandChange} />
+                    <input type="number" value={decreaseDemand} onChange={handleDecreaseDemandChange} /> kWh
                   </label>
                 </MDBox>
+
                
               </form>
+
+
+              {isFormFilled() && (
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <MDBox p={2} textAlign="center">
+                    <MDTypography variant="h5">Total Hourly Carbon</MDTypography>
+                    <MDTypography variant="h3">{previousUserDemand}</MDTypography>
+                
+                  </MDBox>
+                </Grid>
+                <Grid item xs={4}>
+                  <MDBox p={2} textAlign="center">
+                    <MDTypography variant="h5">Adjusted Hourly Carbon</MDTypography>
+                    <MDTypography variant="h3">{carbonIntensitySum}</MDTypography>
+                  
+                  </MDBox>
+                </Grid>
+                <Grid item xs={4}>
+                  <MDBox p={2} textAlign="center">
+                    <MDTypography variant="h5" style={{ color: 'green' }}>Avoided Hourly Carbon</MDTypography>
+                    <MDTypography variant="h3" style={{ color: 'green' }}>{previousUserDemand - carbonIntensitySum }</MDTypography>
+                 
+                  </MDBox>
+                </Grid>
+              </Grid>)}
+
               <br/>
               <br/>
               <br/>
               <br/>
 
-              <MDTypography variant="h5">Green hour predition example</MDTypography>
-              
+              <MDTypography variant="h3">Optimise Your Hourly Carbon </MDTypography>
+              <br/>
+              <br/>
+              <br/>
+              <MDTypography variant="h5">Tomorrow's clean and dirty hours </MDTypography>
+           
+              <br/>
+              <br/>
               <Tables />
+              <br/>
+              <br/>
+              <br/>
             
             </MDBox>
           </Grid>

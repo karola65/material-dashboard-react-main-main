@@ -53,7 +53,7 @@ import { Login } from "@mui/icons-material";
 const routes = [
   {
     type: "collapse",
-    name: "Carbon calucator",
+    name: "Dashboard",
     key: "ddd",
     icon: <Icon fontSize="small">note</Icon>,
     route: "/notifications",
@@ -73,7 +73,7 @@ const routes = [
     name: "Feedback",
     key: "feedback",
     icon: <Icon fontSize="small">feedback</Icon>,
-    route: "/feedback",
+    route: "https://www.peercarbon.io/",
     component: <SignIn />,
   },
 ];
