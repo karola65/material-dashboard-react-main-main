@@ -21,7 +21,7 @@ import Card from "@mui/material/Card";
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, ReferenceLine, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -373,17 +373,20 @@ function Notifications() {
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
               <ResponsiveContainer width="95%" height={400}>
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="black" verticalPoints={[250,  440]} />
                   <XAxis dataKey="time" />
+                  
                   <YAxis yAxisId="left" label={{ value: 'Intensity (grams)', angle: -90, position: 'insideLeft' }} />
                  
                   <YAxis yAxisId="right" orientation="right" label={{ value: 'Demand (kWh)', angle: -90, position: 'insideRight' }} />
-             
+                 
                   <Tooltip />
                   <Legend />
+                 
                   <Line type="monotone" dataKey="intensity" name="Carbon Intensity" stroke="red" yAxisId="left" />
                   {isFormFilled() && (<Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />)}
                   
+
                 </LineChart>
               </ResponsiveContainer>
             </Box>
