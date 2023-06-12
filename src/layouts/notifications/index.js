@@ -376,11 +376,13 @@ function Notifications() {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="time" />
                   <YAxis yAxisId="left" label={{ value: 'Intensity (grams)', angle: -90, position: 'insideLeft' }} />
+                 
                   <YAxis yAxisId="right" orientation="right" label={{ value: 'Demand (kWh)', angle: -90, position: 'insideRight' }} />
+             
                   <Tooltip />
                   <Legend />
                   <Line type="monotone" dataKey="intensity" name="Carbon Intensity" stroke="red" yAxisId="left" />
-                  <Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />
+                  {isFormFilled() && (<Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />)}
                 </LineChart>
               </ResponsiveContainer>
             </Box>
