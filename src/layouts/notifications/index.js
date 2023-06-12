@@ -218,7 +218,7 @@ function Notifications() {
   const [adjustedChartData, setAdjustedChartData] = useState([]);
   const [previousUserDemand, setPreviousUserDemand] = useState('');
   const [demandChange, setDemandChange] = useState('');
-
+  const midnight = new Date("2023-01-19T23:30Z").toLocaleTimeString('en-GB');
   
   useEffect(() => {
     fetchChartData();
@@ -335,7 +335,7 @@ function Notifications() {
   const fetchCarbonIntensityData = async () => {
     try {
       const response = await axios.get(
-        'https://api.carbonintensity.org.uk/regional/intensity/2023-01-19T23:30Z/2023-01-22T23:00Z/regionid/15'
+        'https://api.carbonintensity.org.uk/regional/intensity/2023-02-24T23:30Z/2023-02-27T23:00Z/regionid/15'
       );
 
       const data = response.data.data.data;
@@ -367,7 +367,7 @@ function Notifications() {
           <Grid item xs={12} lg={10}>
             <MDBox p={2} lineHeight={0}>
             <MDBox p={2} textAlign="left">
-              <MDTypography variant="h3">Your hourly carbon</MDTypography>
+              <MDTypography variant="h3">Your Carbon Flex Potential</MDTypography>
             </MDBox>
             </MDBox>
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
@@ -383,12 +383,13 @@ function Notifications() {
                   <Legend />
                   <Line type="monotone" dataKey="intensity" name="Carbon Intensity" stroke="red" yAxisId="left" />
                   {isFormFilled() && (<Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />)}
+                  
                 </LineChart>
               </ResponsiveContainer>
             </Box>
             
             <MDBox p={2} textAlign="left">
-              <MDTypography variant="h3">Personalise</MDTypography>
+              
               <form  onSubmit={handleIncreaseDemandChange}>
                 <MDBox mt={2} mb={1}>
                   <label>
@@ -441,8 +442,11 @@ function Notifications() {
               <br/>
               <br/>
 
-              <MDTypography variant="h3">Optimise Your Hourly Carbon </MDTypography>
+              <MDTypography variant="h3">Optimise </MDTypography>
+             
               <br/>
+              <MDTypography variant="h5">Our Carbon Flex API let's your assets work for carbon value every hour </MDTypography>
+             
               <br/>
               <br/>
               <MDTypography variant="h5">Tomorrow's clean and dirty hours </MDTypography>
