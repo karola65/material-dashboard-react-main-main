@@ -373,7 +373,7 @@ function Notifications() {
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
               <ResponsiveContainer width="95%" height={400}>
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="black" verticalPoints={[250,  440]} />
+                  <CartesianGrid strokeDasharray="3 3"  />
                   <XAxis dataKey="time" />
                   
                   <YAxis yAxisId="left" label={{ value: 'Intensity (grams)', angle: -90, position: 'insideLeft' }} />
