@@ -332,6 +332,9 @@ function Notifications() {
     return increaseDemand !== '' && decreaseDemand !== '';
   };
 
+  const isHalfFormFilled = () => {
+    return increaseDemand !== '';
+  };
   const fetchCarbonIntensityData = async () => {
     try {
       const response = await axios.get(
@@ -384,7 +387,7 @@ function Notifications() {
                   <Legend />
                  
                   <Line type="monotone" dataKey="intensity" name="Carbon Intensity" stroke="red" yAxisId="left" />
-                  {isFormFilled() && (<Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />)}
+                  {isHalfFormFilled() && (<Line type="monotone" dataKey="demand" name="Demand" stroke="blue" yAxisId="right" />)}
                   
 
                 </LineChart>
