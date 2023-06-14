@@ -357,8 +357,12 @@ function Notifications() {
     } catch (error) {
       console.error('Error fetching carbon intensity data:', error);
       return [];
+      
     }
   };
+  const VerticalPoints = ({ data }) => {
+    const verticalPositions = [1/3, 2/3];
+};
 
 
  
@@ -376,7 +380,7 @@ function Notifications() {
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
               <ResponsiveContainer width="95%" height={400}>
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3"  />
+                  <CartesianGrid strokeDasharray="3 3 3" VerticalPoints = {chartData}  />
                   <XAxis dataKey="time" />
                   
                   <YAxis yAxisId="left" label={{ value: 'Intensity (grams)', angle: -90, position: 'insideLeft' }} />

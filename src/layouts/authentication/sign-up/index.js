@@ -32,7 +32,7 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/london.jpeg";
-import qrcode from "assets/images/QR.png";
+import qrcode from "assets/images/QR_1.png";
 import { useEffect } from "react";
 
 const LocationComponent = () => {
